@@ -42,8 +42,8 @@ var GitHubApiService_1 = require("./GitHubApiService");
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                svc = new GitHubApiService_1.GitHubApiService();
-                return [4 /*yield*/, svc.getUserInfo('qwoxa')];
+                svc = new GitHubApiService_1.GitHubApiService('qwoxa');
+                return [4 /*yield*/, svc.getUser()];
             case 1:
                 user = _a.sent();
                 console.log(user);

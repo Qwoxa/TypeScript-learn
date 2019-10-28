@@ -41,24 +41,59 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var axios_1 = __importDefault(require("axios"));
 var User_1 = require("./User");
+var Repo_1 = require("./Repo");
 var GitHubApiService = /** @class */ (function () {
-    function GitHubApiService() {
+    function GitHubApiService(userName) {
+        this.userName = userName;
+        this.baseurl = 'https://api.github.com/users';
+        this.userName = userName;
     }
-    GitHubApiService.prototype.getUserInfo = function (userName) {
+    GitHubApiService.prototype.getUserName = function () {
+        return this.userName;
+    };
+    GitHubApiService.prototype.getUser = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var repos, user;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.getRepos()];
+                    case 1:
+                        repos = _a.sent();
+                        return [4 /*yield*/, this.getUserInfo(repos)];
+                    case 2:
+                        user = _a.sent();
+                        this.user = user;
+                        return [2 /*return*/, user];
+                }
+            });
+        });
+    };
+    GitHubApiService.prototype.getUserInfo = function (repos) {
         return __awaiter(this, void 0, void 0, function () {
             var response, user;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, axios_1.default.get("https://api.github.com/users/" + userName)];
+                    case 0: return [4 /*yield*/, axios_1.default.get(this.baseurl + "/" + this.userName)];
                     case 1:
                         response = _a.sent();
-                        user = new User_1.User(response.data);
+                        user = new User_1.User(response.data, repos);
                         return [2 /*return*/, user];
                 }
             });
         });
     };
     GitHubApiService.prototype.getRepos = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var response;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, axios_1.default.get(this.baseurl + "/" + this.userName + "/repos")];
+                    case 1:
+                        response = _a.sent();
+                        return [2 /*return*/, response.data.map(function (repo) { return new Repo_1.Repo(repo); })];
+                }
+            });
+        });
     };
     return GitHubApiService;
 }());

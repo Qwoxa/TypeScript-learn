@@ -5,12 +5,13 @@ export class User {
     fullName: string;
     repoCount: number;
     followerCount: number;
-    repos?: Repo[];
+    repos: Repo[];
 
-    constructor(userResponse: any) {
+    constructor(userResponse: any, repos: Repo[]) {
         this.login = userResponse.login;
         this.fullName = userResponse.name;
         this.repoCount = userResponse.public_repos;
         this.followerCount = userResponse.followers;
+        this.repos = repos;
     }
 }
